@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:14
+    environment:
+      POSTGRES_USER: nextjs_user
+      POSTGRES_PASSWORD: your_password
+      POSTGRES_DB: nextjs_crud
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  nextjs:
+    build: .
+    environment:
+      DATABASE_URL: "postgresql://nextjs_user:your_password@postgres:5432/nextjs_crud"
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+
+volumes:
+  postgres_data:
